@@ -406,7 +406,150 @@
                 text-align: center;
             }
         }
+/* =========================
+   JANELA DO PRODUTO
+========================= */
 
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(60, 30, 35, 0.65);
+    z-index: 3000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-conteudo {
+    width: 900px;
+    max-width: 100%;
+    background: #fffaf9;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+}
+
+.fechar {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    border: none;
+    background: transparent;
+    font-size: 32px;
+    color: #8d6268;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.modal-imagem {
+    min-height: 500px;
+    background: linear-gradient(135deg, #f3c7c5, #df9ca3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-family: Arial, sans-serif;
+    letter-spacing: 2px;
+}
+
+.modal-info {
+    padding: 60px 45px;
+}
+
+.modal-info small {
+    color: #b7954b;
+    letter-spacing: 3px;
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+}
+
+.modal-info h2 {
+    font-size: 38px;
+    font-weight: normal;
+    color: #633e45;
+    margin: 15px 0;
+}
+
+.modal-preco {
+    color: #b7954b;
+    font-size: 22px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+.modal-info p {
+    color: #795b60;
+    line-height: 1.7;
+    font-family: Arial, sans-serif;
+}
+
+.modal-info h4 {
+    margin-top: 30px;
+    margin-bottom: 12px;
+    color: #633e45;
+    font-family: Arial, sans-serif;
+}
+
+.tamanhos {
+    display: flex;
+    gap: 10px;
+}
+
+.tamanhos button {
+    width: 45px;
+    height: 40px;
+    border: 1px solid #d3a8a8;
+    background: white;
+    color: #633e45;
+    cursor: pointer;
+}
+
+.tamanhos button:hover {
+    background: #d79ba0;
+    color: white;
+}
+
+.comprar-whatsapp {
+    width: 100%;
+    margin-top: 30px;
+    padding: 16px;
+    border: none;
+    background: #b7954b;
+    color: white;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    letter-spacing: 1px;
+    transition: 0.3s;
+}
+
+.comprar-whatsapp:hover {
+    background: #8f7137;
+}
+
+@media (max-width: 700px) {
+
+    .modal-conteudo {
+        grid-template-columns: 1fr;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .modal-imagem {
+        min-height: 250px;
+    }
+
+    .modal-info {
+        padding: 35px 25px;
+    }
+
+    .modal-info h2 {
+        font-size: 30px;
+    }
+
+}
         @media (max-width: 500px) {
 
             .categorias,
@@ -683,16 +826,100 @@
 
     <script>
 
-        function comprar(produto) {
+      <!-- JANELA DO PRODUTO -->
 
-            alert(
-                "Você selecionou: " + produto +
-                "\n\nEm breve você poderá finalizar sua compra."
-            );
+<div id="produtoModal" class="modal">
 
-        }
+    <div class="modal-conteudo">
 
-    </script>
+        <button class="fechar" onclick="fecharProduto()">×</button>
 
-</body>
-</html>
+        <div class="modal-imagem">
+            FOTO DO PRODUTO
+        </div>
+
+        <div class="modal-info">
+
+            <small>BELA LAYLA CLOSET</small>
+
+            <h2 id="modalNome">Produto</h2>
+
+            <p class="modal-preco" id="modalPreco">
+                R$ 0,00
+            </p>
+
+            <p id="modalDescricao">
+                Uma peça criada para mulheres que
+                valorizam elegância, delicadeza e estilo.
+            </p>
+
+            <h4>Escolha o tamanho:</h4>
+
+            <div class="tamanhos">
+
+                <button>P</button>
+                <button>M</button>
+                <button>G</button>
+                <button>GG</button>
+
+            </div>
+
+            <button class="comprar-whatsapp" onclick="comprarWhatsApp()">
+                COMPRAR PELO WHATSAPP
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    let produtoAtual = "";
+
+    function comprar(produto) {
+
+        produtoAtual = produto;
+
+        document.getElementById("modalNome").innerText = produto;
+
+        const precos = {
+            "Vestido Aurora": "R$ 189,90",
+            "Conjunto Bella": "R$ 219,90",
+            "Blusa Amélia": "R$ 119,90",
+            "Calça Valentina": "R$ 169,90"
+        };
+
+        document.getElementById("modalPreco").innerText =
+            precos[produto] || "R$ 0,00";
+
+        document.getElementById("produtoModal").style.display = "flex";
+    }
+
+    function fecharProduto() {
+
+        document.getElementById("produtoModal").style.display = "none";
+
+    }
+
+    function comprarWhatsApp() {
+
+        const mensagem =
+            "Olá! Tenho interesse no produto: " +
+            produtoAtual;
+
+        const telefone = "5500000000000";
+
+        window.open(
+            "https://wa.me/" +
+            telefone +
+            "?text=" +
+            encodeURIComponent(mensagem),
+            "_blank"
+        );
+
+    }
+
+</script>
