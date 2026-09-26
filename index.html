@@ -587,9 +587,14 @@
                 <a href="#contato">Contato</a>
             </nav>
 
-            <div class="icone">
-                ♡
-            </div>
+           <div class="icone">
+    ♡
+</div>
+
+<div class="icone carrinho-icone" onclick="abrirCarrinho()">
+    🛒
+    <span id="contadorCarrinho">0</span>
+</div>
 
         </div>
     </header>
@@ -853,8 +858,6 @@
 
             <h4>Escolha o tamanho:</h4>
 
-            <div class="tamanhos">
-
         <div class="tamanhos">
 
     <button onclick="selecionarTamanho('P', this)">P</button>
@@ -875,7 +878,43 @@
     </div>
 
 </div>
+<!-- JANELA DO CARRINHO -->
 
+<div id="carrinhoModal" class="modal">
+
+    <div class="modal-conteudo carrinho-conteudo">
+
+        <button class="fechar" onclick="fecharCarrinho()">×</button>
+
+        <div class="modal-info">
+
+            <small>BELA LAYLA CLOSET</small>
+
+            <h2>Meu Carrinho</h2>
+
+            <div id="listaCarrinho">
+                <p>Seu carrinho está vazio.</p>
+            </div>
+
+            <div class="carrinho-total">
+
+                <strong>Total:</strong>
+
+                <span id="carrinhoTotal">
+                    R$ 0,00
+                </span>
+
+            </div>
+
+            <button class="finalizar-compra" onclick="finalizarCompra()">
+                FINALIZAR COMPRA
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
 
 <script>
 
@@ -961,7 +1000,9 @@ function adicionarAoCarrinho() {
     };
 
     carrinho.push(produto);
-
+    
+document.getElementById("contadorCarrinho").innerText = carrinho.length;
+    
     alert("Produto adicionado ao carrinho!");
 
     fecharProduto();
@@ -969,11 +1010,57 @@ function adicionarAoCarrinho() {
     console.log(carrinho);
 
 }
-    function fecharProduto() {
+function abrirCarrinho() {
 
-        document.getElementById("produtoModal").style.display = "none";
+    const lista = document.getElementById("listaCarrinho");
+
+    lista.innerHTML = "";
+
+    if (carrinho.length === 0) {
+
+        lista.innerHTML = "<p>Seu carrinho está vazio.</p>";
+
+        document.getElementById("carrinhoTotal").innerText = "R$ 0,00";
+
+    } else {
+
+        let total = 0;
+
+        carrinho.forEach(function(produto) {
+
+            total += produto.preco * produto.quantidade;
+
+            const item = document.createElement("div");
+
+            item.innerHTML = `
+                <p>
+                    <strong>${produto.nome}</strong><br>
+                    Tamanho: ${produto.tamanho}<br>
+                    Quantidade: ${produto.quantidade}<br>
+                    R$ ${(produto.preco * produto.quantidade).toFixed(2).replace(".", ",")}
+                </p>
+                <hr>
+            `;
+
+            lista.appendChild(item);
+
+        });
+
+                document.getElementById("carrinhoTotal").innerText =
+            "R$ " + total.toFixed(2).replace(".", ",");
 
     }
+
+    document.getElementById("carrinhoModal").style.display = "flex";
+
+}
+
+
+function fecharCarrinho() {
+
+    document.getElementById("carrinhoModal").style.display = "none";
+
+}
 
 
     function comprarWhatsApp() {
