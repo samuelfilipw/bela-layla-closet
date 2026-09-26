@@ -855,16 +855,20 @@
 
             <div class="tamanhos">
 
-                <button>P</button>
-                <button>M</button>
-                <button>G</button>
-                <button>GG</button>
+        <div class="tamanhos">
+
+    <button onclick="selecionarTamanho('P', this)">P</button>
+    <button onclick="selecionarTamanho('M', this)">M</button>
+    <button onclick="selecionarTamanho('G', this)">G</button>
+    <button onclick="selecionarTamanho('GG', this)">GG</button>
+
+</div>
 
             </div>
 
-            <button class="comprar-whatsapp" onclick="comprarWhatsApp()">
-                COMPRAR PELO WHATSAPP
-            </button>
+           <button class="adicionar-carrinho" onclick="adicionarAoCarrinho()">
+    ADICIONAR AO CARRINHO
+</button>
 
         </div>
 
@@ -875,34 +879,96 @@
 
 <script>
 
-    let produtoAtual = "";
+       let produtoAtual = "";
+
+    let tamanhoSelecionado = "";
+
+    let carrinho = [];
+
 
     function comprar(produto) {
 
-        produtoAtual = produto;
+    produtoAtual = produto;
 
-        document.getElementById("modalNome").innerText = produto;
+    document.getElementById("modalNome").innerText = produto;
 
-        const precos = {
+    const precos = {
 
-            "Vestido Aurora": "R$ 189,90",
+        "Vestido Aurora": "R$ 189,90",
 
-            "Conjunto Bella": "R$ 219,90",
+        "Conjunto Bella": "R$ 219,90",
 
-            "Blusa Amélia": "R$ 119,90",
+        "Blusa Amélia": "R$ 119,90",
 
-            "Calça Valentina": "R$ 169,90"
+        "Calça Valentina": "R$ 169,90"
 
-        };
+    };
 
-        document.getElementById("modalPreco").innerText =
-            precos[produto] || "R$ 0,00";
+    document.getElementById("modalPreco").innerText =
+        precos[produto] || "R$ 0,00";
 
-        document.getElementById("produtoModal").style.display = "flex";
+    document.getElementById("produtoModal").style.display = "flex";
 
+}
+
+
+function selecionarTamanho(tamanho, botao) {
+
+    tamanhoSelecionado = tamanho;
+
+    document.querySelectorAll(".tamanhos button").forEach(function(btn) {
+
+        btn.style.background = "white";
+        btn.style.color = "#633e45";
+
+    });
+
+    botao.style.background = "#d79ba0";
+    botao.style.color = "white";
+
+}
+function adicionarAoCarrinho() {
+
+    if (tamanhoSelecionado === "") {
+
+        alert("Por favor, escolha um tamanho.");
+
+        return;
     }
 
+    const precos = {
 
+        "Vestido Aurora": 189.90,
+
+        "Conjunto Bella": 219.90,
+
+        "Blusa Amélia": 119.90,
+
+        "Calça Valentina": 169.90
+
+    };
+
+    const produto = {
+
+        nome: produtoAtual,
+
+        preco: precos[produtoAtual],
+
+        tamanho: tamanhoSelecionado,
+
+        quantidade: 1
+
+    };
+
+    carrinho.push(produto);
+
+    alert("Produto adicionado ao carrinho!");
+
+    fecharProduto();
+
+    console.log(carrinho);
+
+}
     function fecharProduto() {
 
         document.getElementById("produtoModal").style.display = "none";
